@@ -3,10 +3,11 @@ import React, { useReducer } from 'react';
 import TotalDisplay from './components/TotalDisplay';
 import CalcButton from './components/CalcButton';
 import reducer, { initialState } from './reducers';
-import { addOne, applyNumber, changeOperation } from './actions';
+import { addOne, applyNumber, changeOperation, setTotal, applyMR, memoryClear, totalClear } from './actions';
 
 function App() {
   const [value, dispatchValue] = useReducer(reducer, initialState);
+
   return (
     <div className="App">
       <nav className="navbar navbar-dark bg-dark">
@@ -28,9 +29,9 @@ function App() {
             </div>
 
             <div className="row">
-              <CalcButton value={"M+"} />
-              <CalcButton value={"MR"} />
-              <CalcButton value={"MC"} />
+              <CalcButton value={"M+"} onClick={() => dispatchValue(setTotal())}/>
+              <CalcButton value={"MR"} onClick={() => dispatchValue(applyMR())}/>
+              <CalcButton value={"MC"} onClick={() => dispatchValue(memoryClear())} />
             </div>
 
             <div className="row">
@@ -58,7 +59,7 @@ function App() {
             </div>
 
             <div className="row ce_button">
-              <CalcButton value={"CE"} />
+              <CalcButton value={"CE"} onClick={() => dispatchValue(totalClear())}  />
             </div>
 
           </form>

@@ -1,4 +1,4 @@
-import { ADD_ONE, APPLY_NUMBER, CHANGE_OPERATION } from './../actions';
+import { ADD_ONE, APPLY_NUMBER, CHANGE_OPERATION, SET_TOTAL, APPLY_MR, MEMORY_CLEAR, TOTAL_CLEAR } from './../actions';
 
 export const initialState = {
   total: 0,
@@ -21,39 +21,37 @@ const calculateResult = (num1, num2, operation) => {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case (ADD_ONE):
-      return ({
+
+    case ADD_ONE:
+      return { ...state, total: state.total + 1 };
+
+    case APPLY_NUMBER:
+      return {
         ...state,
-        total: state.total + 1
-      });
+        total: calculateResult(state.total, action.payload, state.operation),
+      };
 
-    case (APPLY_NUMBER):
-      return ({
+    case CHANGE_OPERATION:
+      return { ...state, operation: action.payload };
+
+    case SET_TOTAL:
+      return { ...state, memory: state.total };
+
+    case APPLY_MR:
+      return {
         ...state,
-        total: calculateResult(state.total, action.payload, state.operation)
-      });
+        total: calculateResult(state.total, state.memory, state.operation),
+      };
 
-    case (CHANGE_OPERATION):
-      return ({
-        ...state,
-        operation: action.payload
-      });
+    case MEMORY_CLEAR:
+      return { ...state, memory: 0 };
 
-      case SET_TOTAL:
-        return ({
-          ...state,
-          memory: state.total
-        });
-
-        case APPLY_MR:
-          return ({
-            ...state,
-            total: calculateResult(state.total, state.memory, state.operation),
-          });
+    case TOTAL_CLEAR:
+      return { ...state, total: 0 };
 
     default:
       return state;
   }
-}
+};
 
 export default reducer;
